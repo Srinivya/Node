@@ -1,15 +1,15 @@
 const Product = require("../models/ProductModel");
 
-exports.getProducts = async (req, res,next) => {
+exports.getProducts = async (req, res, next) => {
   try {
     const getProducts = await Product.find();
     return res.status(200).json({ message: "Get Product", data: getProducts });
   } catch (err) {
-   next(err)
+    next(err);
   }
 };
 
-exports.getAllProducts = async (req, res,next) => {
+exports.getAllProducts = async (req, res, next) => {
   try {
     const {
       page = 1,
@@ -32,11 +32,15 @@ exports.getAllProducts = async (req, res,next) => {
       query["rating.rate"] = { $gte: parseInt(minRating) };
     }
 
-    if (minPrice) {
-      query.price = { $lte: parseInt(minPrice) };
-    }
-    if (maxPrice) {
-      query.price = { $gte: parseInt(maxPrice) };
+    if (minPrice || maxPrice) {
+        query.price = {};
+      if (minPrice) {
+      
+        query.price.$gte =  parseFloat(minPrice) ;
+      }
+      if (maxPrice) {
+        query.price.$lte =  parseFloat(maxPrice) ;
+      }
     }
 
     const total = await Product.countDocuments(query);
@@ -57,11 +61,11 @@ exports.getAllProducts = async (req, res,next) => {
       products,
     });
   } catch (err) {
-   next(err)
+    next(err);
   }
 };
 
-exports.getProductById = async (req, res,next) => {
+exports.getProductById = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const getProductById = await Product.findById(productId);
@@ -69,11 +73,11 @@ exports.getProductById = async (req, res,next) => {
       .status(200)
       .json({ message: "Product by id", data: getProductById });
   } catch (err) {
-   next(err)
+    next(err);
   }
 };
 
-exports.createProduct = async (req, res,next) => {
+exports.createProduct = async (req, res, next) => {
   try {
     const productData = req.body;
     const existing = await Product.findOne({ title: productData.title });
@@ -89,7 +93,7 @@ exports.createProduct = async (req, res,next) => {
   }
 };
 
-exports.updateProduct = async (req, res,next) => {
+exports.updateProduct = async (req, res, next) => {
   try {
     const productData = req.body;
     const { productId } = req.params;
@@ -109,7 +113,7 @@ exports.updateProduct = async (req, res,next) => {
   }
 };
 
-exports.deleteProduct = async (req, res,next) => {
+exports.deleteProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
 
@@ -121,6 +125,6 @@ exports.deleteProduct = async (req, res,next) => {
       .status(200)
       .json({ message: "Product deleted", data: deleteProduct });
   } catch (err) {
-     next(err);
+    next(err);
   }
 };

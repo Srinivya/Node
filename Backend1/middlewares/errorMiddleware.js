@@ -2,7 +2,7 @@ const globalErrorHandler = async (err, req, res, next) => {
   let { statusCode = 500, message } = err;
 
   if (err.name === "CastError") {
-     console.log(err);
+    console.log(err);
     statusCode = 400;
     message = `Invalid ${err.path} : ${err.value}`;
   }
@@ -16,14 +16,13 @@ const globalErrorHandler = async (err, req, res, next) => {
   }
 
   if (err.code === 11000) {
-     console.log(err);
+    console.log(err);
     statusCode = 400;
     const field = Object.keys(err.keyValue)[0];
     message = `Duplicate value for field ${field}`;
   }
   res.status(statusCode).json({
-    
-    status: `${statusCode} fail`,
+    status: `${statusCode}`.startsWith("4") ? "fail" : "error",
     message,
   });
 };
