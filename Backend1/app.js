@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const UserRoutes = require("./routes/UserRoutes");
 const morgan = require("morgan");
 const ProductRoutes = require("./routes/ProductRoute");
+const globalErrorHandler = require("./middlewares/errorMiddleware");
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,18 +20,24 @@ app.get("/", (req, res) => {
 app.use("/products", ProductRoutes);
 app.use("/user", UserRoutes);
 
-async function DBConnection() {
+app.use((req,res,next)=>{
+const err=new Error(`Cannot find ${req.originalUrl}`)
+
+})
+
+
+async function DBConnection(req,res) {
   try {
     await mongoose.connect(process.env.MONGO_DB);
     console.log("DB connection successfull");
-  } catch (e) {
-    console.log(`Error: ${e.message}`);
+  } catch (err) {
+    console.log("Not connected to DB")
   }
 }
 
 DBConnection();
 
-
+app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
   console.log(`Running in the PORT ${PORT}`);
