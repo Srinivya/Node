@@ -13,6 +13,7 @@ exports.getUserById = async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId);
+    console.log(user.password);
     res.status(200).json({ message: "success", data: user });
   } catch (e) {
     res.status(500).json({ message: e.message });
