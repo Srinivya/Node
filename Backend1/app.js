@@ -26,7 +26,7 @@ app.use("/auth", authRoutes);
 
 app.use((req, res, next) => {
   const err = new Error(`Cannot find ${req.originalUrl}`);
-  next();
+  next(err);
 });
 console.log();
 
