@@ -7,7 +7,7 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import Cart from "./Pages/CartPage/Cart";
 import ProductLayout from "./Layout/ProductLayout";
 import CartProvider from "./Context/CartProvider";
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 import ProductDetailPage from "./Pages/ProductDetailPage/ProductDetailPage";
 
 function App() {
@@ -20,14 +20,12 @@ function App() {
           <Routes>
             <Route path="/" element={<ProductLayout />}>
               <Route path="login" element={<LoginPage />} />
-
-              <Route path="PLP" element={<ProductListingPage />} />
-              <Route path="PLP/:id" element={<ProductDetailPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="products" element={<ProductListingPage />} />
+              <Route path="products/:id" element={<ProductDetailPage />} />
               <Route path="cart" element={<Cart />} />
             </Route>
-            <Route path="/register" element={<RegisterPage />} />
           </Routes>
-      
         </CartProvider>
       </BrowserRouter>
     </>

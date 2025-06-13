@@ -18,7 +18,7 @@ const Cart = () => {
     return (
       <div className={styles.emptyCart}>
         <h1>Your cart is Empty</h1>
-        <Link to="/PLP">Continue Shopping</Link>
+        <Link to="/products">Continue Shopping</Link>
         <p>You have an account?</p>
         <p>
           <Link to="/login">Login</Link> to check

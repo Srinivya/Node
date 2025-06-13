@@ -1,8 +1,12 @@
 import React from "react";
 import styles from "./LoginPage.module.css";
-import {Link} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const handleSubmit = () => {
+    navigate("/products");
+  };
   return (
     <div className={styles.loginContainer}>
       <h2 className={styles.loginTitle}>Login</h2>
@@ -19,10 +23,15 @@ const LoginPage = () => {
         <label>Password:</label>
         <input type="password" className={styles.inputField} />
       </div>
-      <Link to={"/PLP"}>
-      <button className={styles.loginBtn}>Login</button> 
-      </Link>
-     
+
+      <button
+        className={styles.loginBtn}
+        onClick={() => {
+          handleSubmit();
+        }}
+      >
+        Login
+      </button>
     </div>
   );
 };

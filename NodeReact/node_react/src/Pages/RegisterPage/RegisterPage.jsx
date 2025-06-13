@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./RegisterPage.module.css";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const navigate=useNavigate();
+  const handleSubmit=()=>{
+navigate("/login");
+  }
   return (
     <>
       <div className={styles.registerContainer}>
@@ -32,7 +37,7 @@ const RegisterPage = () => {
           <input type="password" className={styles.inputField} />
         </div>
 
-        <button type="submit" className={styles.registerBtn}>Register</button>
+        <button type="submit" onClick={()=>{handleSubmit()}} className={styles.registerBtn}>Register</button>
       </div>
     </>
   );
