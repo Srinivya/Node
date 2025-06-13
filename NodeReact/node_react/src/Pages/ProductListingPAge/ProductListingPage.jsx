@@ -4,6 +4,7 @@ import styles from "./ProductListingPage.module.css";
 import { Link } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { Spin } from "antd";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 function ProductListingPage() {
   const [product, setProduct] = useState(null);
@@ -68,7 +69,7 @@ function ProductListingPage() {
                       className="icon-btn"
                       onClick={() => handleDecrement(item)}
                     >
-                      -
+                      <FaMinus />
                     </button>
                   )}
                   <span className="quantity">{currentItem.quantity}</span>
@@ -76,7 +77,7 @@ function ProductListingPage() {
                     className="icon-btn"
                     onClick={() => handleIncrement(item)}
                   >
-                    +
+                  <FaPlus />
                   </button>
                 </div>
               ) : (

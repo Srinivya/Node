@@ -4,12 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ProductDetailPage.module.css";
 import apiClient from "../../api/apiClient";
 import { CartContext } from "../../Context/CartContext";
+import { Spin } from "antd";
+
 const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const { cart, addCart } =
-    useContext(CartContext);
+  const { cart, addCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchedProducts = async () => {
@@ -18,13 +20,30 @@ const ProductDetailPage = () => {
         setProduct(response.data);
       } catch (e) {
         console.log(e);
+      } finally {
+        setLoading(false);
       }
     };
     fetchedProducts();
   }, [id]);
 
-  if (!product) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <Spin
+        className="spinLoading"
+        size="large"
+        style={{
+          textAlign: "center",
+          justifyContent: "center",
+          display: "flex",
+          marginTop: "40vh",
+        }}
+      />
+    );
+  }
+
+  if (product.length === 0) {
+    return <h1>No Product Found...</h1>;
   }
 
   const currentItem = cart.find((cartItem) => cartItem.id === product.id);
