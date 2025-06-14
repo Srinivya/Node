@@ -7,7 +7,7 @@ import { Spin } from "antd";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 function ProductListingPage() {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const[error,setError]=useState(null);
   const { cart, addCart, RemoveCart, handleIncrement, handleDecrement } =
@@ -17,7 +17,7 @@ function ProductListingPage() {
     const fetchedProducts = async () => {
       try {
         const response = await apiClient.get("/products");
-        setProduct(response.data);
+        setProduct(response.data.products);
       } catch (e) {
         console.log(e);
         setError("Error in fetching the Products")

@@ -5,8 +5,7 @@ const { protect, authorize } = require("../middlewares/authMiddleware");
 
 const ProductRoutes=express.Router();
 
-ProductRoutes.get('/',protect,authorize("admin"),getAllProducts);
-
+ProductRoutes.get('/',getAllProducts);
 ProductRoutes.post('/',createProduct);
 
 ProductRoutes.get('/:productId',getProductById);
