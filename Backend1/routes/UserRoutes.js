@@ -6,7 +6,7 @@ const UserRoutes=express.Router();
 
 UserRoutes.get("/",getUser);
 
-UserRoutes.get("/:userId",protect,authorize("user"),getUserById);
+UserRoutes.get("/:userId",getUserById);
 UserRoutes.post("/",createUser);
 UserRoutes.put("/:userId",protect,authorize("admin"),updateUser);
 UserRoutes.delete("/:userId",protect,authorize("admin"),deleteUser);
