@@ -9,24 +9,27 @@ import ProductLayout from "./Layout/ProductLayout";
 import CartProvider from "./Context/CartProvider";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ProductDetailPage from "./Pages/ProductDetailPage/ProductDetailPage";
+import AuthProvider from "../context/AuthProvider";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <CartProvider>
-          <Header />
+        <AuthProvider>
+          <CartProvider>
+            <Header />
 
-          <Routes>
-            <Route path="/" element={<ProductLayout />}>
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route path="products" element={<ProductListingPage />} />
-              <Route path="products/:id" element={<ProductDetailPage />} />
-              <Route path="cart" element={<Cart />} />
-            </Route>
-          </Routes>
-        </CartProvider>
+            <Routes>
+              <Route path="/" element={<ProductLayout />}>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+                <Route path="products" element={<ProductListingPage />} />
+                <Route path="products/:id" element={<ProductDetailPage />} />
+                <Route path="cart" element={<Cart />} />
+              </Route>
+            </Routes>
+          </CartProvider>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );

@@ -57,5 +57,26 @@ const register = async (req, res, next) => {
     next(err);
   }
 };
+const verify=async (req,res,next) => {
+  try {
+    const token=req.cookies.jwt;
+    if(!token){
+      return res.status(400).json({message:"Unauthorized.Please login!.."})
+    }
+    
+     const decodedData = jwt.verify(token, process.env.SECRET_kEY);
+     const user=await User.findById(decodedData.id);
+     if(!user){
+      return res.status(400).json({message:"User not Found"})
+     }
+     res.status(200).json({
+      message:"Authenticated User"
+     })
+     
+  } catch (err) {
+    next(err)
+  }
+  
+}
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout,verify };

@@ -29,7 +29,7 @@ function ProductListingPage() {
   }, []);
 
   if (loading) {
-    return <Spin className="spinLoading" size="large" style={{textAlign:'center',justifyContent:'center',display:'flex',marginTop:'40vh'}} />;
+    return <Spin size="large" style={{textAlign:'center',justifyContent:'center',display:'flex',marginTop:'40vh'}} />;
   }
 
   if (product.length === 0) {
