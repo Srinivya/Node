@@ -8,10 +8,12 @@ const ProductRoutes = require("./routes/ProductRoute");
 const globalErrorHandler = require("./middlewares/errorMiddleware");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
+const cors=require('cors');
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+app.use(cors())
 
 app.use(express.json());
 app.use(morgan("dev"));
