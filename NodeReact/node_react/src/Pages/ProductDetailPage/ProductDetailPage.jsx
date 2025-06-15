@@ -1,36 +1,36 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ProductDetailPage.module.css";
 import apiClient from "../../api/apiClient";
-import { CartContext } from "../../Context/CartContext";
 import { Spin } from "antd";
+import { CartContext } from "../../Context/CartContext/CartContext";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+
   const { cart, addCart } = useContext(CartContext);
 
   useEffect(() => {
-    const fetchedProducts = async () => {
+    const fetchedProduct = async () => {
       try {
         const response = await apiClient.get(`/products/${id}`);
-        setProduct(response.data);
+        console.log("Product detail response:", response.data)
+        setProduct(response.data.data);
       } catch (e) {
         console.log(e);
       } finally {
         setLoading(false);
       }
     };
-    fetchedProducts();
+    fetchedProduct();
   }, [id]);
 
   if (loading) {
     return (
       <Spin
-        className="spinLoading"
         size="large"
         style={{
           textAlign: "center",
@@ -42,11 +42,11 @@ const ProductDetailPage = () => {
     );
   }
 
-  if (product.length === 0) {
+  if (!product) {
     return <h1>No Product Found...</h1>;
   }
 
-  const currentItem = cart.find((cartItem) => cartItem.id === product.id);
+  const currentItem = cart.find((cartItem) => cartItem._id === product._id);
 
   return (
     <div className={styles.container}>
@@ -59,9 +59,7 @@ const ProductDetailPage = () => {
           {currentItem ? (
             <button
               className="cart-btn go-to-cart"
-              onClick={() => {
-                navigate("/cart");
-              }}
+              onClick={() => navigate("/cart")}
             >
               Go to Cart
             </button>

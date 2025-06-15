@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
 import styles from "./LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext } from "../../Context/AuthContext/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,10 +15,14 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
     try {
-     await login(email,password);
+      await login(email, password);
       navigate("/products");
     } catch (err) {
-      setError("Invalid Credentials");
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Login failed...");
+      }
     }
   };
   return (

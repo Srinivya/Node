@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext } from "../../Context/CartContext";
 import styles from "./ProductListingPage.module.css";
 import { Link } from "react-router-dom";
 import apiClient from "../../api/apiClient";
 import { Spin } from "antd";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { CartContext } from "../../Context/CartContext/CartContext";
 
 function ProductListingPage() {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
-  const[error,setError]=useState(null);
+  const [error, setError] = useState(null);
   const { cart, addCart, RemoveCart, handleIncrement, handleDecrement } =
     useContext(CartContext);
 
@@ -20,7 +20,7 @@ function ProductListingPage() {
         setProduct(response.data.products);
       } catch (e) {
         console.log(e);
-        setError("Error in fetching the Products")
+        setError("Error in fetching the Products");
       } finally {
         setLoading(false);
       }
@@ -29,31 +29,42 @@ function ProductListingPage() {
   }, []);
 
   if (loading) {
-    return <Spin size="large" style={{textAlign:'center',justifyContent:'center',display:'flex',marginTop:'40vh'}} />;
+    return (
+      <Spin
+        size="large"
+        style={{
+          textAlign: "center",
+          justifyContent: "center",
+          display: "flex",
+          marginTop: "40vh",
+        }}
+      />
+    );
   }
 
   if (product.length === 0) {
     return <h1>No Product Found...</h1>;
   }
 
-  if(error){
-    return <h1>{error}</h1>
+  if (error) {
+    return <h1>{error}</h1>;
   }
 
   return (
     <div className={styles.container}>
       {product.map((item) => {
-        const currentItem = cart.find((cartItem) => cartItem.id === item.id);
+        const currentItem = cart.find((cartItem) => cartItem._id === item._id);
 
         return (
-          <div className={styles.card} key={item.id}>
-            <Link to={`${item.id}`} className={styles.link}>
+          <div className={styles.card} key={item._id}>
+            <Link to={`${item._id}`} className={styles.link}>
               <img className={styles.image} src={item.image} alt={item.title} />
               <h1 className={styles.title}>{item.title}</h1>
-              <h1 className={styles.title}>₹{item.price}</h1>
-
-              <h2 className={styles.rate}>{item.rate}</h2>
             </Link>
+            <h1 className={styles.title}>₹{item.price}</h1>
+
+            <h2 className={styles.rate}>{item.rate}</h2>
+
             <div className="cart-action">
               {currentItem ? (
                 <div className="quantity-controls">
@@ -77,7 +88,7 @@ function ProductListingPage() {
                     className="icon-btn"
                     onClick={() => handleIncrement(item)}
                   >
-                  <FaPlus />
+                    <FaPlus />
                   </button>
                 </div>
               ) : (

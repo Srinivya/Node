@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import styles from "./RegisterPage.module.css";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../api/apiClient";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext/AuthContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const{register}=useContext(AuthContext)
   const [value, setValue] = useState({
     firstName: "",
     lastName: "",
@@ -17,7 +20,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       const fullName = `${value.firstName} ${value.lastName}`;
-      await apiClient.post("/auth/register", {
+      await register( {
         name: fullName,
         email: value.email,
         password: value.password,

@@ -6,11 +6,11 @@ const CartProvider = ({ children }) => {
 
   const addCart = (product) => {
     setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.id === product.id);
+      const existing = prevCart.find((item) => item._id === product._id);
 
       if (existing) {
         return prevCart.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -19,15 +19,19 @@ const CartProvider = ({ children }) => {
       }
     });
   };
-
+ const clearCart = () => setCart([]);
   const RemoveCart = (product) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== product.id));
+    setCart((prevCart) =>
+      prevCart.filter((item) => item._id !== product._id)
+    );
   };
 
   const handleIncrement = (product) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        item._id === product._id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       )
     );
   };
@@ -36,7 +40,7 @@ const CartProvider = ({ children }) => {
     setCart((prevCart) =>
       prevCart
         .map((item) =>
-          item.id === product.id && item.quantity > 1
+          item._id === product._id && item.quantity > 1
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
@@ -46,7 +50,7 @@ const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, addCart, RemoveCart, handleIncrement, handleDecrement }}
+      value={{ cart,clearCart, addCart, RemoveCart, handleIncrement, handleDecrement }}
     >
       {children}
     </CartContext.Provider>

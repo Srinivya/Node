@@ -28,6 +28,8 @@ const login = async (req, res, next) => {
     res.cookie("jwt", token, {
       maxAge: parseInt(process.env.COOKIE_EXPIRY),
       httpOnly: true,
+      sameSite: "Lax",
+      secure: false,
     });
     res.status(200).json({ message: "login successfull" });
   } catch (err) {
@@ -37,7 +39,12 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-    res.clearCookie("jwt");
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: false,
+    });
+
     res.status(200).json({ message: "Logout successfull" });
   } catch (err) {
     next(err);
@@ -51,32 +58,31 @@ const register = async (req, res, next) => {
     if (existing) {
       return res.status(400).json({ message: "Email already exist" });
     }
-    const userUser = await User.create({ email, name, password,role});
+    const userUser = await User.create({ email, name, password, role });
     res.status(201).json({ message: "User created", data: userUser });
   } catch (err) {
     next(err);
   }
 };
-const verify=async (req,res,next) => {
+const verify = async (req, res, next) => {
   try {
-    const token=req.cookies.jwt;
-    if(!token){
-      return res.status(400).json({message:"Unauthorized.Please login!.."})
+    const token = req.cookies.jwt;
+    if (!token) {
+      return res.status(400).json({ message: "Unauthorized.Please login!.." });
     }
-    
-     const decodedData = jwt.verify(token, process.env.SECRET_kEY);
-     const user=await User.findById(decodedData.id);
-     if(!user){
-      return res.status(400).json({message:"User not Found"})
-     }
-     res.status(200).json({
-      message:"Authenticated User"
-     })
-     
-  } catch (err) {
-    next(err)
-  }
-  
-}
 
-module.exports = { register, login, logout,verify };
+    const decodedData = jwt.verify(token, process.env.SECRET_kEY);
+    const user = await User.findById(decodedData.id);
+    if (!user) {
+      return res.status(400).json({ message: "User not Found" });
+    }
+    res.status(200).json({
+      message: "Authenticated User",
+      user,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, logout, verify };

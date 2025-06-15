@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   age: {
     type: Number,
     min: [18, "Age must be greater than 18"],
+    required:false
   },
   password: {
     type: String,
